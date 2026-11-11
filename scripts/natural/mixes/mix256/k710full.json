@@ -1,0 +1,21 @@
+{
+ "name": "k710full_256",
+ "description": "Baseline: all of K710 (20% store + remaining 80%), short edge 256, JPEG 85",
+ "epoch_clips": 111565,
+ "sources": [
+  {
+   "name": "k710",
+   "weight": 1.0,
+   "shards": [
+    {
+     "path": "/scratch/CLUSTER_USER/datasets/mix256/k710_20pct/train_20pct.lance",
+     "frame_stride": 2
+    },
+    {
+     "dataset": "/scratch/CLUSTER_USER/datasets/mix256/k710.lance",
+     "frame_stride": 1
+    }
+   ]
+  }
+ ]
+}

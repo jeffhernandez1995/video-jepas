@@ -1,0 +1,72 @@
+{
+ "name": "mix1_256",
+ "description": "LeVJEPA+: K710/SSv2/PE Video as in LeVJEPA scaling corpus, plus EgoDex, DROID and ImageNet-1K images (stores re-encoded at short edge 256, JPEG 85)",
+ "epoch_clips": 111565,
+ "sources": [
+  {
+   "name": "k710",
+   "weight": 0.25,
+   "shards": [
+    {
+     "path": "/scratch/CLUSTER_USER/datasets/mix256/k710_20pct/train_20pct.lance",
+     "frame_stride": 2
+    },
+    {
+     "dataset": "/scratch/CLUSTER_USER/datasets/mix256/k710.lance",
+     "frame_stride": 1
+    }
+   ]
+  },
+  {
+   "name": "ssv2",
+   "weight": 0.15,
+   "shards": [
+    {
+     "dataset": "/scratch/CLUSTER_USER/datasets/mix256/ssv2.lance",
+     "frame_stride": 1
+    }
+   ]
+  },
+  {
+   "name": "pe_video",
+   "weight": 0.35,
+   "shards": [
+    {
+     "dataset": "/scratch/CLUSTER_USER/datasets/mix256/pe_video.lance",
+     "frame_stride": 1
+    }
+   ]
+  },
+  {
+   "name": "egodex",
+   "weight": 0.1,
+   "shards": [
+    {
+     "dataset": "/scratch/CLUSTER_USER/datasets/mix256/egodex.lance",
+     "frame_stride": 1
+    }
+   ]
+  },
+  {
+   "name": "droid",
+   "weight": 0.05,
+   "shards": [
+    {
+     "dataset": "/scratch/CLUSTER_USER/datasets/mix256/droid.lance",
+     "frame_stride": 1
+    }
+   ]
+  },
+  {
+   "name": "in1k",
+   "weight": 0.1,
+   "kind": "image",
+   "shards": [
+    {
+     "dataset": "/scratch/CLUSTER_USER/datasets/mix256/in1k.lance",
+     "frame_stride": 1
+    }
+   ]
+  }
+ ]
+}

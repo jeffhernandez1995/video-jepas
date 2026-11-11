@@ -1,0 +1,82 @@
+{
+ "name": "mix2",
+ "description": "Web-heavy, V-JEPA 2.1 shape: PE Video + VidaForge dominant, SSv2 boosted, CC12M images",
+ "epoch_clips": 111565,
+ "sources": [
+  {
+   "name": "k710",
+   "weight": 0.05,
+   "shards": [
+    {
+     "path": "/scratch/CLUSTER_USER/datasets/k710/train_20pct.lance",
+     "frame_stride": 2
+    },
+    {
+     "dataset": "/scratch/CLUSTER_USER/datasets/mix/k710.lance",
+     "frame_stride": 1
+    }
+   ]
+  },
+  {
+   "name": "ssv2",
+   "weight": 0.15,
+   "shards": [
+    {
+     "dataset": "/scratch/CLUSTER_USER/datasets/mix/ssv2.lance",
+     "frame_stride": 1
+    }
+   ]
+  },
+  {
+   "name": "pe_video",
+   "weight": 0.3,
+   "shards": [
+    {
+     "dataset": "/scratch/CLUSTER_USER/datasets/mix/pe_video.lance",
+     "frame_stride": 1
+    }
+   ]
+  },
+  {
+   "name": "vidaforge",
+   "weight": 0.3,
+   "shards": [
+    {
+     "dataset": "/scratch/CLUSTER_USER/datasets/mix/vidaforge.lance",
+     "frame_stride": 1
+    }
+   ]
+  },
+  {
+   "name": "egodex",
+   "weight": 0.08,
+   "shards": [
+    {
+     "dataset": "/scratch/CLUSTER_USER/datasets/mix/egodex.lance",
+     "frame_stride": 1
+    }
+   ]
+  },
+  {
+   "name": "droid",
+   "weight": 0.04,
+   "shards": [
+    {
+     "dataset": "/scratch/CLUSTER_USER/datasets/mix/droid.lance",
+     "frame_stride": 1
+    }
+   ]
+  },
+  {
+   "name": "cc12m",
+   "weight": 0.08,
+   "kind": "image",
+   "shards": [
+    {
+     "dataset": "/scratch/CLUSTER_USER/datasets/mix/cc12m.lance",
+     "frame_stride": 1
+    }
+   ]
+  }
+ ]
+}

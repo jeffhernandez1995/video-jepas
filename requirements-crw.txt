@@ -1,0 +1,8 @@
+# Minimal script dependencies, pinned to the upstream uv.lock (Linux CUDA 12.8).
+# No Lightning, Lance, notebook server, teacher, projector, or video decoder needed.
+--extra-index-url https://download.pytorch.org/whl/cu128
+torch==2.11.0+cu128
+numpy==2.5.2
+matplotlib==3.11.1
+pillow==12.3.0
+huggingface-hub==1.28.0

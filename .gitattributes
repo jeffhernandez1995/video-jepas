@@ -1,0 +1,7 @@
+# Site-specific values are replaced by placeholders in commits; see scripts/private_filter.sh
+*.py     filter=private
+*.sh     filter=private
+*.sbatch filter=private
+*.md     filter=private
+*.json   filter=private
+*.txt    filter=private

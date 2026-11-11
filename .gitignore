@@ -218,3 +218,14 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# --- project ---
+.DS_Store
+# archive of the synthetic-benchmark stage: local only
+old/
+# run outputs and data stay on the clusters / local disk
+runs/
+data/
+# upstream clones: only the pinned revision (<name>.commit) is tracked
+third_party/*/
+!third_party/videomaev2_hf/

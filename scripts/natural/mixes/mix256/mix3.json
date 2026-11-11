@@ -1,0 +1,72 @@
+{
+ "name": "mix3_256",
+ "description": "No PE Video: VidaForge as the web source, CC12M images (stores re-encoded at short edge 256, JPEG 85)",
+ "epoch_clips": 111565,
+ "sources": [
+  {
+   "name": "k710",
+   "weight": 0.1,
+   "shards": [
+    {
+     "path": "/scratch/CLUSTER_USER/datasets/mix256/k710_20pct/train_20pct.lance",
+     "frame_stride": 2
+    },
+    {
+     "dataset": "/scratch/CLUSTER_USER/datasets/mix256/k710.lance",
+     "frame_stride": 1
+    }
+   ]
+  },
+  {
+   "name": "ssv2",
+   "weight": 0.15,
+   "shards": [
+    {
+     "dataset": "/scratch/CLUSTER_USER/datasets/mix256/ssv2.lance",
+     "frame_stride": 1
+    }
+   ]
+  },
+  {
+   "name": "vidaforge",
+   "weight": 0.5,
+   "shards": [
+    {
+     "dataset": "/scratch/CLUSTER_USER/datasets/mix256/vidaforge.lance",
+     "frame_stride": 1
+    }
+   ]
+  },
+  {
+   "name": "egodex",
+   "weight": 0.1,
+   "shards": [
+    {
+     "dataset": "/scratch/CLUSTER_USER/datasets/mix256/egodex.lance",
+     "frame_stride": 1
+    }
+   ]
+  },
+  {
+   "name": "droid",
+   "weight": 0.05,
+   "shards": [
+    {
+     "dataset": "/scratch/CLUSTER_USER/datasets/mix256/droid.lance",
+     "frame_stride": 1
+    }
+   ]
+  },
+  {
+   "name": "cc12m",
+   "weight": 0.1,
+   "kind": "image",
+   "shards": [
+    {
+     "dataset": "/scratch/CLUSTER_USER/datasets/mix256/cc12m.lance",
+     "frame_stride": 1
+    }
+   ]
+  }
+ ]
+}
