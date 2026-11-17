@@ -250,9 +250,57 @@ def load_dinov2(path):
     return _PerFrame(model).eval().requires_grad_(False), info
 
 
+class _VideoFlexTok(nn.Module):
+    """VideoFlexTok's encoder as a frozen feature extractor: the clip (ImageNet-normalized, 224 px) is
+    mapped back to [0, 1], resized to the tokenizer's 128 px (bicubic, antialias) and scaled to [-1, 1];
+    VidTok KL-VAE posterior mean, then the 18-layer FlexTransformer encoder up to (not including) its
+    1152 -> 6 FSQ projection. Tokens: every latent patch (t x 16 x 16) and every register (t x 256), with
+    t = 1 + (T - 1) / 4 groups, so T must be 1 mod 4 (9 frames -> 3 groups, 1536 tokens). The encoder has
+    no final norm (token std ~3e3), so a parameter-free LayerNorm is applied to every token."""
+    def __init__(self, model, sub=8):
+        super().__init__()
+        self.vt, self.sub, self.embed_dim = model.video_tokenizer, sub, 1152
+        self.register_buffer('mean', MEAN.clone(), persistent=False)
+        self.register_buffer('std', STD.clone(), persistent=False)
+
+    def forward(self, x):                                   # B,3,T,H,W
+        b, c, t, h, w = x.shape
+        assert (t - 1) % 4 == 0, f'VideoFlexTok needs 1 + 4k frames, got {t}'
+        x = (x.float() * self.std + self.mean).clamp(0, 1).transpose(1, 2).reshape(b * t, c, h, w)
+        x = F.interpolate(x, size=(128, 128), mode='bicubic', antialias=True, align_corners=False)
+        x = x.clamp(0, 1).mul(2).sub(1).reshape(b, t, c, 128, 128).transpose(1, 2)
+        out = []
+        for i in range(0, b, self.sub):
+            d = self.vt.vae.encode({'rgb': list(x[i:i + self.sub].split(1, 0))})
+            for name, mod in self.vt.encoder.module_dict.items():
+                if name == 'enc_to_latents':
+                    break
+                d = mod(d)
+            for p, r in zip(d['enc_vae_latents_patched'], d['enc_registers']):
+                out.append(torch.cat([p.flatten(1, 3), r.flatten(1, 2)], 1))
+        tok = torch.cat(out).float()
+        return F.layer_norm(tok, (tok.shape[-1],))
+
+
+def load_videoflextok(path):
+    """VideoFlexTok (EPFL-VILAB/videoflextok_d18_d18_k600, the ViT-T's target tokenizer), path = the
+    local model directory. Run with the videoflextok venv (/scratch/CLUSTER_USER/envs/videoflextok)."""
+    os.environ.setdefault('HF_HUB_OFFLINE', '1')
+    from videoflextok.wrappers import VideoFlexTokFromHub
+    model = VideoFlexTokFromHub.from_pretrained(path).eval()
+    n = 0
+    for m in model.modules():
+        if type(m).__name__ == 'DiagonalGaussianRegularizer':
+            m.sample = False; n += 1                          # posterior mean, not a sample
+    assert n == 1, n
+    info = dict(model='videoflextok_d18_d18_k600', weights='pretrained', epoch=-1, global_step=-1,
+                attn_mode='time_block_causal', embed_dim=1152, cls=False, token_matched_frames=9)
+    return _VideoFlexTok(model).eval().requires_grad_(False), info
+
+
 LOADERS = {'levjepa': load_levjepa, 'nlp': load_nlp, 'vjepa': load_vjepa, 'vjepa2': load_vjepa2,
            'levjepa_hf': load_levjepa_hf, 'videomae': load_videomae, 'videomaev2': load_videomaev2,
-           'dinov2': load_dinov2}
+           'dinov2': load_dinov2, 'videoflextok': load_videoflextok}
 
 
 class Cache(torch.utils.data.Dataset):
